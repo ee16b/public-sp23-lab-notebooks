@@ -15,7 +15,7 @@ jobs:
           fetch-depth: 0
       - name: Get lab directory
         id: file
-        run: echo '::set-output name=f::"$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | sed 's%/[^/]*$%/%' | cut -d/ -f1 | sort -u | grep "lab*_*")"'
+        run: echo 'f="$(git diff  --no-renames --name-only ${{ github.event.before }} ${{ github.sha }} | sed 's%/[^/]*$%/%' | cut -d/ -f1 | sort -u | grep "lab*_*")"' >> $GITHUB_OUTPUT
       - name: Generate Zip
         id: zip_gen
         run: >
@@ -27,7 +27,7 @@ jobs:
           done
       - name: Commit Changes
         run: |
-          git config --local user.email "eecs16b-sp23@berkeley.edu"
+          git config --local user.email "eecs16b-git@berkeley.edu"
           git config --local user.name "EECS 16B Lab Staff - Zip Script"
           git add -A :/
           git commit -m "Zip for lab"
